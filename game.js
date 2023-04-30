@@ -76,7 +76,7 @@ const oilPumpButton = document.getElementById('oilPump-button');
 const oilPumpUpgradeButton = document.getElementById('oilPump-upgrade-button');
 
 oilPumpButton.addEventListener('click', () => {
-    
+    energy += oilPumpProduction;
     updateResourceDisplay();
 });
 
