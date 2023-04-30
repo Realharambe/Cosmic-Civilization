@@ -1,2 +1,2 @@
 # What?
- # Just a random space civilizzatyion game
+ # Just a random space civilization game
