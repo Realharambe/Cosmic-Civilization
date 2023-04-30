@@ -126,7 +126,7 @@
             manualGainButton.addEventListener('click', () => {
                 energy += 1;
                 minerals += 1;
-                oil += 1;
+                oil += 0;
                 updateResourceDisplay();
             });
         
@@ -140,7 +140,7 @@
             const mineUpgradeButton = document.getElementById('mine-upgrade-button');
         
             mineButton.addEventListener('click', () => {
-                minerals += mineProduction;
+                energy += mineProduction;
                 updateResourceDisplay();
             });
         
@@ -194,24 +194,23 @@
             const oilPumpUpgradeButton = document.getElementById('oilPump-upgrade-button');
         
             oilPumpButton.addEventListener('click', () => {
-                energy += oilPumpProduction;
                 oil += oilPumpProduction;
                 updateResourceDisplay();
             });
         
             oilPumpUpgradeButton.addEventListener('click', () => {
-                if (energy >= oilPumpUpgradeCostEnergy && minerals >= oilPumpUpgradeCostMinerals) {
-                    energy -= oilPump
-                    PumpUpgradeCostEnergy;
-            minerals -= oilPumpUpgradeCostMinerals;
-            oilPumpLevel++;
-            oilPumpProduction += 30;
-            oilPumpUpgradeCostEnergy += 15;
-            oilPumpUpgradeCostMinerals += 10;
-            updateBuildingInfo('oilPump');
-            updateResourceDisplay();
-        }
-    });
+    if (energy >= oilPumpUpgradeCostEnergy && minerals >= oilPumpUpgradeCostMinerals) {
+        energy -= oilPumpUpgradeCostEnergy;
+        minerals -= oilPumpUpgradeCostMinerals;
+        oilPumpLevel++;
+        oilPumpProduction += 1;
+        oilPumpUpgradeCostEnergy += 15;
+        oilPumpUpgradeCostMinerals += 10;
+        updateBuildingInfo('oilPump');
+        updateResourceDisplay();
+    }
+});
+
 
     // Update building information
     function updateBuildingInfo(building) {

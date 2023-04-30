@@ -7,7 +7,7 @@ let oil = 0;
 const manualGainButton = document.getElementById('manual-gain-button');
 manualGainButton.addEventListener('click', () => {
     minerals += 1;
-    oil += 1;
+    oil += 0;
     updateResourceDisplay();
 });
 
@@ -76,7 +76,6 @@ const oilPumpButton = document.getElementById('oilPump-button');
 const oilPumpUpgradeButton = document.getElementById('oilPump-upgrade-button');
 
 oilPumpButton.addEventListener('click', () => {
-    energy += oilPumpProduction;
     oil += oilPumpProduction;
     updateResourceDisplay();
 });
@@ -86,13 +85,14 @@ oilPumpUpgradeButton.addEventListener('click', () => {
         energy -= oilPumpUpgradeCostEnergy;
         minerals -= oilPumpUpgradeCostMinerals;
         oilPumpLevel++;
-        oilPumpProduction += 5;
+        oilPumpProduction += 1;
         oilPumpUpgradeCostEnergy += 15;
         oilPumpUpgradeCostMinerals += 10;
         updateBuildingInfo('oilPump');
         updateResourceDisplay();
     }
 });
+
 
 // Update building information
 function updateBuildingInfo(building) {
