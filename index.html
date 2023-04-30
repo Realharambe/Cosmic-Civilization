@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cosmic Civilization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #000;
+            color: #fff;
+            background-image: url('Space-Background.jpeg');
+            background-size: cover;
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #fff;
+        }
+
+        .resource-display {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .building-container {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background-color: #333;
+            width: 200px;
+        }
+
+        .building-container h2 {
+            margin: 0;
+            padding-bottom: 10px;
+        }
+
+        .building-container span {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .building-container button {
+            width: 100%;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cosmic Civilization</h1>
+
+    <div class="resource-display">
+        <span>Energy: <span id="energy-display">0</span></span>
+        <span>Minerals: <span id="minerals-display">0</span></span>
+        <span>Oil: <span id="oil-display">0</span></span>
+        <button id="manual-gain-button">Manual Gain</button>
+    </div>
+
+    <div class="container">
+        <div class="building-container">
+            <h2>Mine</h2>
+            <div class="building-info">
+                <span>Level: <span id="mine-level">0</span></span>
+                <span>Production Rate: <span id="mine-production">0</span></span>
+                <span>Upgrade Cost: <span id="mine-upgrade-cost">5 Energy, 15 Minerals</span></span>
+            </div>
+            <div class="building-buttons">
+                <button id="mine-button">Start Production</button>
+                <button id="mine-upgrade-button">Upgrade</button>
+            </div>
+        </div>
+
+        <div class="building-container">
+            <h2>Power Plant</h2>
+            <div class="building-info">
+                <span>Level: <span id="powerPlant-level">0</span></span>
+                <span>Production Rate: <span id="powerPlant-production">0</span></span>
+                <span>Upgrade Cost: <span id="powerPlant-upgrade-cost">15 Energy, 5 Minerals</span></span>
+            </div>
+            <div class="building-buttons">
+                <button id="powerPlant-button">Start Production</button>
+                <button id="powerPlant-upgrade-button">Upgrade</button>
+            </div>
+        </div>
+
+        <div class="building-container">
+            <h2>Oil Pump</h2>
+            <div class="building-info">
+                <span>Level: <
+                    <span id="oilPump-level">0</span></span>
+                    <span>Production Rate: <span id="oilPump-production">0</span></span>
+                    <span>Upgrade Cost: <span id="oilPump-upgrade-cost">20 Energy, 20 Minerals</span></span>
+                </div>
+                <div class="building-buttons">
+                    <button id="oilPump-button">Start Production</button>
+                    <button id="oilPump-upgrade-button">Upgrade</button>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            // Initialize resources
+            let energy = 0;
+            let minerals = 0;
+            let oil = 0;
+        
+            // Resource gain per click
+            const manualGainButton = document.getElementById('manual-gain-button');
+            manualGainButton.addEventListener('click', () => {
+                energy += 1;
+                minerals += 1;
+                oil += 0;
+                updateResourceDisplay();
+            });
+        
+            // Mine functionality
+            let mineLevel = 0;
+            let mineProduction = 0;
+            let mineUpgradeCostEnergy = 5;
+            let mineUpgradeCostMinerals = 15;
+        
+            const mineButton = document.getElementById('mine-button');
+            const mineUpgradeButton = document.getElementById('mine-upgrade-button');
+        
+            mineButton.addEventListener('click', () => {
+                energy += mineProduction;
+                updateResourceDisplay();
+            });
+        
+            mineUpgradeButton.addEventListener('click', () => {
+                if (energy >= mineUpgradeCostEnergy && minerals >= mineUpgradeCostMinerals) {
+                    energy -= mineUpgradeCostEnergy;
+                    minerals -= mineUpgradeCostMinerals;
+                    mineLevel++;
+                    mineProduction += 10;
+                    mineUpgradeCostEnergy += 5;
+                    mineUpgradeCostMinerals += 10;
+                    updateBuildingInfo('mine');
+                    updateResourceDisplay();
+                }
+            });
+        
+            // Power Plant functionality
+            let powerPlantLevel = 0;
+            let powerPlantProduction = 0;
+            let powerPlantUpgradeCostEnergy = 15;
+            let powerPlantUpgradeCostMinerals = 5;
+        
+            const powerPlantButton = document.getElementById('powerPlant-button');
+            const powerPlantUpgradeButton = document.getElementById('powerPlant-upgrade-button');
+        
+            powerPlantButton.addEventListener('click', () => {
+                energy += powerPlantProduction;
+                updateResourceDisplay();
+            });
+        
+            powerPlantUpgradeButton.addEventListener('click', () => {
+                if (energy >= powerPlantUpgradeCostEnergy && minerals >= powerPlantUpgradeCostMinerals) {
+                    energy -= powerPlantUpgradeCostEnergy;
+                    minerals -= powerPlantUpgradeCostMinerals;
+                    powerPlantLevel++;
+                    powerPlantProduction += 20;
+                    powerPlantUpgradeCostEnergy += 10;
+                    powerPlantUpgradeCostMinerals += 5;
+                    updateBuildingInfo('powerPlant');
+                    updateResourceDisplay();
+                }
+            });
+        
+            // Oil Pump functionality
+            let oilPumpLevel = 0;
+            let oilPumpProduction = 0;
+            let oilPumpUpgradeCostEnergy = 20;
+            let oilPumpUpgradeCostMinerals = 20;
+        
+            const oilPumpButton = document.getElementById('oilPump-button');
+            const oilPumpUpgradeButton = document.getElementById('oilPump-upgrade-button');
+        
+            oilPumpButton.addEventListener('click', () => {
+                
+                oil += oilPumpProduction;
+                updateResourceDisplay();
+            });
+        
+            oilPumpUpgradeButton.addEventListener('click', () => {
+    if (energy >= oilPumpUpgradeCostEnergy && minerals >= oilPumpUpgradeCostMinerals) {
+        energy -= oilPumpUpgradeCostEnergy;
+        minerals -= oilPumpUpgradeCostMinerals;
+        oilPumpLevel++;
+        oilPumpProduction += 5;
+        oilPumpUpgradeCostEnergy += 15;
+        oilPumpUpgradeCostMinerals += 10;
+        updateBuildingInfo('oilPump');
+        updateResourceDisplay();
+    }
+});
+
+
+    // Update building information
+    function updateBuildingInfo(building) {
+        const buildingLevelElement = document.getElementById(`${building}-level`);
+        const buildingProductionElement = document.getElementById(`${building}-production`);
+        const buildingUpgradeCostElement = document.getElementById(`${building}-upgrade-cost`);
+
+        switch (building) {
+            case 'mine':
+                buildingLevelElement.textContent = mineLevel;
+                buildingProductionElement.textContent = mineProduction;
+                buildingUpgradeCostElement.textContent = `${mineUpgradeCostEnergy} Energy, ${mineUpgradeCostMinerals} Minerals`;
+                break;
+            case 'powerPlant':
+                buildingLevelElement.textContent = powerPlantLevel;
+                buildingProductionElement.textContent = powerPlantProduction;
+                buildingUpgradeCostElement.textContent = `${powerPlantUpgradeCostEnergy} Energy, ${powerPlantUpgradeCostMinerals} Minerals`;
+                break;
+            case 'oilPump':
+                buildingLevelElement.textContent = oilPumpLevel;
+                buildingProductionElement.textContent = oilPumpProduction;
+                buildingUpgradeCostElement.textContent = `${oilPumpUpgradeCostEnergy} Energy, ${oilPumpUpgradeCostMinerals} Minerals`;
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Update resource display
+    function updateResourceDisplay() {
+        const energyDisplay = document.getElementById('energy-display');
+        const mineralsDisplay = document.getElementById('minerals-display');
+        const oilDisplay = document.getElementById('oil-display');
+
+        energyDisplay.textContent = energy;
+        mineralsDisplay.textContent = minerals;
+        oilDisplay.textContent = oil;
+    }
+</script>
+        
