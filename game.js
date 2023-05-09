@@ -2,10 +2,12 @@
 let energy = 0;
 let minerals = 0;
 let oil = 0;
+let researchPoints = 0;
 
 // Resource gain per click
 const manualGainButton = document.getElementById('manual-gain-button');
 manualGainButton.addEventListener('click', () => {
+    energy += 1;
     minerals += 1;
     oil += 0;
     updateResourceDisplay();
@@ -49,7 +51,6 @@ const powerPlantUpgradeButton = document.getElementById('powerPlant-upgrade-butt
 
 powerPlantButton.addEventListener('click', () => {
     energy += powerPlantProduction;
-    minerals += powerPlantProduction;
     updateResourceDisplay();
 });
 
@@ -85,39 +86,92 @@ oilPumpUpgradeButton.addEventListener('click', () => {
         energy -= oilPumpUpgradeCostEnergy;
         minerals -= oilPumpUpgradeCostMinerals;
         oilPumpLevel++;
-        oilPumpProduction += 1;
+        oilPumpProduction += 30;
         oilPumpUpgradeCostEnergy += 15;
-        oilPumpUpgradeCostMinerals += 10;
+        oilPumpUpgradeCostMinerals += 15;
         updateBuildingInfo('oilPump');
         updateResourceDisplay();
     }
 });
 
+// VAB functionality
+const vabButton = document.getElementById('vab-button');
+const vabUnlockCostEnergy = 15;
+const vabUnlockCostMinerals = 15;
+const vabUnlockCostOil = 15;
+let researchpoints = 0;
+let vabUnlocked = false;
 
-// Update building information
+vabButton.addEventListener('click', () => {
+    if (!vabUnlocked && energy >= vabUnlockCostEnergy && minerals >= vabUnlockCostMinerals && oil >= vabUnlockCostOil) {
+        energy -= vabUnlockCostEnergy;
+        minerals -= vabUnlockCostMinerals;
+        oil -= vabUnlockCostOil;
+        vabUnlocked = true;
+        unlockResearchPoints();
+        updateBuildingInfo('vab');
+        updateResourceDisplay();
+    }
+});
+
+function unlockResearchPoints() {
+    if (vabUnlocked) {
+        setInterval(() => {
+            researchPoints++;
+            updateResourceDisplay();
+        }, 1000);
+    }
+}
+
+
+function unlockResearchPoints() {
+    if (vabUnlocked) {
+        // Generate research points
+        setInterval(() => {
+            researchPoints += 1;
+            updateResourceDisplay();
+        }, 1000);
+    }
+}
+
+
+// Update building info
 function updateBuildingInfo(building) {
-    const buildingLevelElement = document.getElementById(`${building}-level`);
-    const buildingProductionElement = document.getElementById(`${building}-production`);
-    const buildingUpgradeCostElement = document.getElementById(`${building}-upgrade-cost`);
-
     switch (building) {
         case 'mine':
-            buildingLevelElement.textContent = mineLevel;
-            buildingProductionElement.textContent = `${mineProduction} Minerals`;
-            buildingUpgradeCostElement.textContent = `${mineUpgradeCostEnergy} Energy, ${mineUpgradeCostMinerals} Minerals`;
+            document.getElementById('mine-level').textContent = mineLevel;
+            document.getElementById('mine-production').textContent = mineProduction;
+            document.getElementById('mine-upgrade-cost').textContent = `${mineUpgradeCostEnergy} Energy, ${mineUpgradeCostMinerals} Minerals`;
             break;
         case 'powerPlant':
-            buildingLevelElement.textContent = powerPlantLevel;
-            buildingProductionElement.textContent = `${powerPlantProduction} Energy`;
-            buildingUpgradeCostElement.textContent = `${powerPlantUpgradeCostEnergy} Energy, ${powerPlantUpgradeCostMinerals} Minerals`;
+            document.getElementById('powerPlant-level').textContent = powerPlantLevel;
+            document.getElementById('powerPlant-production').textContent = powerPlantProduction;
+            document.getElementById('powerPlant-upgrade-cost').textContent = `${powerPlantUpgradeCostEnergy} Energy, ${powerPlantUpgradeCostMinerals} Minerals`;
             break;
         case 'oilPump':
-            buildingLevelElement.textContent = oilPumpLevel;
-            buildingProductionElement.textContent = `${oilPumpProduction} Oil`;
-            buildingUpgradeCostElement.textContent = `${oilPumpUpgradeCostEnergy} Energy, ${oilPumpUpgradeCostMinerals} Minerals`;
+            document.getElementById('oilPump-level').textContent = oilPumpLevel;
+            document.getElementById('oilPump-production').textContent = oilPumpProduction;
+            document.getElementById('oilPump-upgrade-cost').textContent = `${oilPumpUpgradeCostEnergy} Energy, ${oilPumpUpgradeCostMinerals} Minerals`;
+            break;
+        case 'vab':
+            document.getElementById('vab-unlock-cost').textContent = `${vabUnlockCostEnergy} Energy, ${vabUnlockCostMinerals} Minerals, ${vabUnlockCostOil} Oil`;
             break;
         default:
             break;
     }
 }
 
+// Unlock Research Points
+function unlockResearchPoints() {
+    // Add functionality to unlock Research Points
+    researchPoints = 0; // Set initial Research Points to 0
+    updateResourceDisplay();
+}
+
+// Update resource display
+function updateResourceDisplay() {
+    document.getElementById('energy-display').textContent = energy;
+    document.getElementById('minerals-display').textContent = minerals;
+    document.getElementById('oil-display').textContent = oil;
+    document.getElementById('research-points-display').textContent = researchPoints;
+}
